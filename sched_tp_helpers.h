@@ -2,9 +2,9 @@
 #define SCHED_TP_HELPERS_H
 
 /* Required for struct irq_work which is defined in struct root_domain */
-#include <linux/irq_work.h>
+//#include <linux/irq_work.h>
 
-#include <linux/cgroup.h>
+//#include <linux/cgroup.h>
 
 #include "vmlinux.h"
 
@@ -14,6 +14,27 @@ static inline const struct sched_avg *sched_tp_cfs_rq_avg(struct cfs_rq *cfs_rq)
 	return cfs_rq ? &cfs_rq->avg : NULL;
 #else
 	return NULL;
+#endif
+}
+
+static inline bool task_group_is_autogroup(struct task_group *tg)
+{
+#ifdef CONFIG_SCHED_AUTOGROUP
+	return !!tg->autogroup;
+#else
+	return false;
+#endif
+}
+
+int autogroup_path(struct task_group *tg, char *buf, int buflen)
+{
+#ifdef CONFIG_SCHED_AUTOGROUP
+	if (!task_group_is_autogroup(tg))
+		return 0;
+
+	return snprintf(buf, buflen, "%s-%ld", "/autogroup", tg->autogroup->id);
+#else
+	return 0;
 #endif
 }
 
@@ -71,6 +92,16 @@ static inline char *sched_tp_cfs_rq_path(struct cfs_rq *cfs_rq, char *str, int l
 static inline int sched_tp_cfs_rq_cpu(struct cfs_rq *cfs_rq)
 {
 	return cfs_rq ? cpu_of(rq_of(cfs_rq)) : -1;
+}
+
+static inline int sched_tp_rq_cpu(struct rq *rq)
+{
+	return rq ? cpu_of(rq) : -1;
+}
+
+static inline int sched_tp_rq_nr_running(struct rq *rq)
+{
+	return rq ? rq->nr_running : -1;
 }
 
 #endif /* SCHED_TP_HELPERS */

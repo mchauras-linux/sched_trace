@@ -45,6 +45,26 @@ TRACE_EVENT(sched_pelt_cfs,
 		  __entry->RBL_LOAD_ENTRY,__entry->util, __entry->update_time)
 );
 
+TRACE_EVENT(sched_update_nr_running,
+
+	    TP_PROTO(int cpu, int change, unsigned int nr_running),
+
+	    TP_ARGS(cpu, change, nr_running),
+
+	    TP_STRUCT__entry(
+			     __field(         int,        cpu           )
+			     __field(         int,        change        )
+			     __field(unsigned int,        nr_running    )
+			     ),
+
+	    TP_fast_assign(
+			   __entry->cpu        = cpu;
+			   __entry->change     = change;
+			   __entry->nr_running = nr_running;
+			   ),
+
+	    TP_printk("cpu=%d change=%d nr_running=%d", __entry->cpu, __entry->change, __entry->nr_running)
+	    );
 #endif /* _SCHED_EVENTS_H */
 
 /* This part must be outside protection */

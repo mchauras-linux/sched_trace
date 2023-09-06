@@ -1,4 +1,6 @@
+cfs_bandwidth
 cpu_stop_fn_t
+task_group
 rt_prio_array
 cpu_stop_work
 rt_rq

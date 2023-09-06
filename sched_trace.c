@@ -3,6 +3,7 @@
 
 #include <trace/events/sched.h>
 
+#define CREATE_TRACE_POINTS
 #include "sched_events.h"
 
 void sched_trace_pelt_cfs(void *data, struct cfs_rq *cfs_rq) {
@@ -19,15 +20,25 @@ void sched_trace_pelt_cfs(void *data, struct cfs_rq *cfs_rq) {
 	}
 }
 
+static void sched_trace_update_nr_running(void *data, struct rq *rq, int change)
+{
+	if (trace_sched_update_nr_running_enabled()) {
+		  int cpu = sched_tp_rq_cpu(rq);
+		  int nr_running = sched_tp_rq_nr_running(rq);
+
+		trace_sched_update_nr_running(cpu, change, nr_running);
+	}
+}
+
 static int sched_trace_init(void) {
 	register_trace_pelt_cfs_tp(sched_trace_pelt_cfs, NULL);
-//	register_trace_sched_update_nr_running_tp(sched_update_nr_running, NULL);
+	register_trace_sched_update_nr_running_tp(sched_trace_update_nr_running, NULL);
 	return 0;
 }
 
 static void sched_trace_exit(void) {
 	unregister_trace_pelt_cfs_tp(sched_trace_pelt_cfs, NULL);
-//	unregister_trace_sched_update_nr_running_tp(sched_trace_update_nr_running, NULL);
+	unregister_trace_sched_update_nr_running_tp(sched_trace_update_nr_running, NULL);
 }
 
 module_init(sched_trace_init);
