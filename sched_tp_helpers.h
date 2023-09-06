@@ -2,9 +2,9 @@
 #define SCHED_TP_HELPERS_H
 
 /* Required for struct irq_work which is defined in struct root_domain */
-//#include <linux/irq_work.h>
+#include <linux/irq_work.h>
 
-//#include <linux/cgroup.h>
+#include <linux/cgroup.h>
 
 #include "vmlinux.h"
 
