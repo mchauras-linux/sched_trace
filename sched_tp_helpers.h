@@ -8,6 +8,11 @@
 
 #include "vmlinux.h"
 
+static inline int sched_tp_rq_sd_level(struct rq *rq)
+{
+	return rq->sd->level;
+}
+
 static inline const struct sched_avg *sched_tp_cfs_rq_avg(struct cfs_rq *cfs_rq)
 {
 #ifdef CONFIG_SMP
