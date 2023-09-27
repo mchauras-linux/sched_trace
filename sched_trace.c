@@ -44,19 +44,6 @@ static void sched_trace_update_nr_running(void *data, struct rq *rq, int change)
 			trace_sched_update_nr_running(cpu, j, nr_running, level, domain_nr_running);
 			sd_it = sd_it->parent;
 		}
-		sd_it = sched_tp_rq_sd(rq);
-		while (sd_it != NULL) {
-			int level = sched_tp_sd_level(sd_it);
-			int domain_nr_running = 0;
-			int cpu_it;
-			int j = 0;
-			for_each_cpu(cpu_it,sched_domain_span(sd_it)) {
-				domain_nr_running += per_cpu_nr_running[cpu_it];
-				j++;
-			}
-			trace_sched_update_nr_running(cpu, j, nr_running, level, domain_nr_running);
-			sd_it = sd_it->child;
-		}
 	}
 }
 
