@@ -5,12 +5,17 @@
 #include <linux/irq_work.h>
 
 #include <linux/cgroup.h>
+#include <linux/sched/topology.h>
 
 #include "vmlinux.h"
 
-static inline int sched_tp_rq_sd_level(struct rq *rq)
+static inline int sched_tp_sd_level(struct sched_domain *sd)
 {
-	return rq->sd->level;
+	return sd->level;
+}
+static inline struct sched_domain *sched_tp_rq_sd(struct rq *rq)
+{
+	return rq->sd;
 }
 
 static inline const struct sched_avg *sched_tp_cfs_rq_avg(struct cfs_rq *cfs_rq)

@@ -1,3 +1,4 @@
+#include "sched_tp_helpers.h"
 #include <linux/module.h>
 #include <linux/sched.h>
 
@@ -25,8 +26,12 @@ static void sched_trace_update_nr_running(void *data, struct rq *rq, int change)
 	if (trace_sched_update_nr_running_enabled()) {
 		  int cpu = sched_tp_rq_cpu(rq);
 		  int nr_running = sched_tp_rq_nr_running(rq);
-		  int level = sched_tp_rq_sd_level(rq);
-		trace_sched_update_nr_running(cpu, change, nr_running, level);
+		  struct sched_domain *sd_it = sched_tp_rq_sd(rq);
+		  while (sd_it != NULL) {
+			  int level = sched_tp_sd_level(sd_it);
+			  trace_sched_update_nr_running(cpu, change, nr_running, level);
+			  sd_it = sd_it->parent;
+		  }
 	}
 }
 
