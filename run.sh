@@ -1,5 +1,5 @@
 #! /bin/bash
-cleanup {
+cleanup() {
 	rmmod sched_trace.ko
 }
 git pull
