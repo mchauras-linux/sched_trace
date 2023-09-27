@@ -11,4 +11,4 @@ echo 1 > /sys/kernel/debug/tracing/events/sched/sched_update_nr_running/enable
 echo 0 > /sys/kernel/debug/tracing/events/sched/sched_update_nr_running/enable
 cat /sys/kernel/debug/tracing/trace
 
-trap exit cleanup
+trap cleanup EXIT
