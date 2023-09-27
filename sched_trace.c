@@ -29,7 +29,8 @@ static void sched_trace_update_nr_running(void *data, struct rq *rq, int change)
 		  struct sched_domain *sd_it = sched_tp_rq_sd(rq);
 		  while (sd_it != NULL) {
 			  int level = sched_tp_sd_level(sd_it);
-			  trace_sched_update_nr_running(cpu, change, nr_running, level);
+			  unsigned int imb_numa_nr = sched_tp_sd_imb_numa_nr(sd_it);
+			  trace_sched_update_nr_running(cpu, change, nr_running, level, imb_numa_nr);
 			  sd_it = sd_it->parent;
 		  }
 	}

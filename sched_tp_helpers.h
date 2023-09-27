@@ -9,10 +9,16 @@
 
 #include "vmlinux.h"
 
+static inline int sched_tp_sd_imb_numa_nr(struct sched_domain *sd)
+{
+	return sd->imb_numa_nr;
+}
+
 static inline int sched_tp_sd_level(struct sched_domain *sd)
 {
 	return sd->level;
 }
+
 static inline struct sched_domain *sched_tp_rq_sd(struct rq *rq)
 {
 	return rq->sd;

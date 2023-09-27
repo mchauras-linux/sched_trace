@@ -47,15 +47,16 @@ TRACE_EVENT(sched_pelt_cfs,
 
 TRACE_EVENT(sched_update_nr_running,
 
-	    TP_PROTO(int cpu, int change, unsigned int nr_running, int level),
+	    TP_PROTO(int cpu, int change, unsigned int nr_running, int level, unsigned int imb_numa_nr),
 
-	    TP_ARGS(cpu, change, nr_running, level),
+	    TP_ARGS(cpu, change, nr_running, level, imb_numa_nr),
 
 	    TP_STRUCT__entry(
 			     __field(         int,        cpu           )
 			     __field(         int,        change        )
 			     __field(unsigned int,        nr_running    )
 			     __field(         int,        level         )
+			     __field(unsigned int,        imb_numa_nr   )
 			     ),
 
 	    TP_fast_assign(
@@ -63,6 +64,7 @@ TRACE_EVENT(sched_update_nr_running,
 			   __entry->change     = change;
 			   __entry->nr_running = nr_running;
 			   __entry->level      = level;
+			   __entry->imb_numa_nr = imb_numa_nr;
 			   ),
 
 	    TP_printk("cpu=%d change=%d nr_running=%d level=%d", __entry->cpu, __entry->change, __entry->nr_running, __entry->level)
