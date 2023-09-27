@@ -67,7 +67,7 @@ TRACE_EVENT(sched_update_nr_running,
 			   __entry->imb_numa_nr = imb_numa_nr;
 			   ),
 
-	    TP_printk("cpu=%d change=%d nr_running=%d level=%d", __entry->cpu, __entry->change, __entry->nr_running, __entry->level)
+	    TP_printk("cpu=%d change=%d nr_running=%d level=%d numa_nr=%d", __entry->cpu, __entry->change, __entry->nr_running, __entry->level, __entry->imb_numa_nr)
 	    );
 #endif /* _SCHED_EVENTS_H */
 
