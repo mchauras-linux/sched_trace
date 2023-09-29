@@ -27,15 +27,20 @@ void sched_trace_pelt_cfs(void *data, struct cfs_rq *cfs_rq) {
 
 static void sched_trace_update_nr_running(void *data, struct rq *rq, int change)
 {
+	int cpu;
+	int nr_running;
+	struct sched_domain * sd_it;
+	int level;
+	int domain_nr_running;
+	int cpu_it;
 	if (trace_sched_update_nr_running_enabled()) {
-		int cpu = sched_tp_rq_cpu(rq);
-		int nr_running = sched_tp_rq_nr_running(rq);
+		cpu = sched_tp_rq_cpu(rq);
+		nr_running = sched_tp_rq_nr_running(rq);
 		per_cpu_nr_running[cpu] = nr_running;
-		struct sched_domain *sd_it = sched_tp_rq_sd(rq);
+		sd_it = sched_tp_rq_sd(rq);
 		while (sd_it != NULL) {
-			int level = sched_tp_sd_level(sd_it);
-			int domain_nr_running = 0;
-			int cpu_it;
+			level = sched_tp_sd_level(sd_it);
+			domain_nr_running = 0;
 			for_each_cpu(cpu_it,sched_domain_span(sd_it)) {
 				domain_nr_running += per_cpu_nr_running[cpu_it];
 			}
